@@ -1,153 +1,452 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- css boostrap -->
-    <link rel="stylesheet" href="style.css">
+    <title>STECT Group</title>
+    <!-- bootstarp css -->
+    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.css">
+    <!-- Line chart -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
+    <!-- fontawsome -->
+    <script src="https://kit.fontawesome.com/9735169392.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- chart line -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
-    <div class="container py-5">
-        <h1 class="text-primary fs-1 text-center mb-4">CRUD EMPLOYEE SYSTEM</h1>
-        <form action="" id="employee-form">
-            <div class="row">
-                <div class="form-group col-4">
-                    <label for="">EmpName: </label>
-                    <input type="text" id="employee-name" class="form-control" required>
+    <div class="wrapper">
+        <aside id="sidebar" class="js-sidebar min-vh-100" style="background-color: #ffffff08;">
+            <!-- Content For Sidebar -->
+            <div style="position: sticky; top: 0; left: 0; z-index: 9999;">
+                <div class="sidebar-logo"
+                    style="padding-bottom: 25px; border-bottom: 1px solid #e7eaed; border-bottom-style: dashed;">
+                    <a href="#">SETEC>GROUP</a>
                 </div>
-                <div class="form-group col-4">
-                    <label for="">Position: </label>
-                    <input type="text" id="employee-position" class="form-control" required>
+                <ul class="sidebar-nav ">
+                    <li class="sidebar-item" onclick="getDashboard()">
+                        <a href="#" class="sidebar-link rounded-1 mt-3" style="background-color: #ffffff20;">
+                            <i class="fa-solid fa-gauge"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#produce" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-regular fa-hard-drive"></i>
+                            Product
+                        </a>
+                        <ul id="produce" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item" onclick="addProduct()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-plus"></i> Add Produce</a>
+                            </li>
+                            <li class="sidebar-item" onclick="listProduct()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-list"></i> List Produce</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#categories"
+                            data-bs-toggle="collapse" aria-expanded="false"><i class="fa-solid fa-layer-group"></i>
+                            Categories
+                        </a>
+                        <ul id="categories" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item" onclick="addGategories()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-plus"></i> Add Categories</a>
+                            </li>
+                            <li class="sidebar-item" onclick="listCategories()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-list"></i> List Categories</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#orders" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-cart-shopping"></i>
+                            Orders
+                        </a>
+                        <ul id="orders" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item" onclick="addOrders()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-plus"></i> Add Orders</a>
+                            </li>
+                            <li class="sidebar-item" onclick="listOrders()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-list"></i> List Orders</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#users" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-users"></i>
+                            Users
+                        </a>
+                        <ul id="users" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item" onclick="addUsers()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-plus"></i> Add Users</a>
+
+
+                            </li>
+                            <li class="sidebar-item" onclick="listUsers()">
+                                <a href="#" class="sidebar-link"><i class="fa-solid fa-list"></i> List Users</a>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-gear"></i> Setting
+                        </a>
+
+                    </li>
+                </ul>
+
+            </div>
+
+        </aside>
+        <div class="container-fluid" style="background-color: #F0F0F2; padding-bottom: 100px;">
+            <nav class="d-flex justify-content-between align-items-center"
+                style="position: sticky; top: 0; left: 0; z-index: 99999; background-color: #F0F0F2 !important;  border-bottom: 1px solid #282C30; border-bottom-style: dashed; padding:12px 0px">
+                <button class="btn fs-4" id="sidebar-toggle" type="button" style="color: #282C30; border: none;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="p-2 rounded-circle d-flex justify-content-center align-items-center"
+                        style="background-color: #282c3028; height: 30px; width: 30px; cursor: pointer;">
+                        <div class="">
+
+                            <i class="fa-solid fa-magnifying-glass fs-6" style="color: #282C30;"></i>
+
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-circle d-flex justify-content-center align-items-center"
+                        style="background-color: #282c3028; height: 30px; width: 30px; cursor: pointer;">
+                        <div class=" position-relative ">
+                            <i class="fa-regular fa-bell fa-shake fs-6" style="color: #282C30;"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle rounded-circle d-flex justify-content-center align-items-center"
+                                style="width: 13px; height: 13px; background-color: red; color: white; font-size: 6px; font-weight: 800;">
+                                9+
+                            </span>
+                        </div>
+                    </div>
+                    <div class="navbar-brand myNavbar-brand">
+                        <img src="./assets/image/profile user.jpg" alt="">
+                    </div>
+
                 </div>
-                <div class="form-group col-4">
-                    <label for="">HireDate: </label>
-                    <input type="date" id="employee-hiredate" class="form-control" required>
+            </nav>
+            <div class="">
+                <h1 class="fs-4 pt-3 fw-medium" style="color: #282C30;">Dashboard</h1>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+                        <div class="card d-flex flex-column justify-content-between"
+                            style="height: 150px; background-color: #006280d2;">
+                            <div class="d-flex justify-content-between px-3 pt-3 text-white">
+                                <div class="">
+                                    <h1 class="display-6 fw-light" id="idProduct"></h1>
+                                    <p class="fs-6">Products</p>
+                                </div>
+                                <div class="display-1" style="color: #00000018;">
+                                    <i class="fa-regular fa-hard-drive"></i>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0.067);">
+                                <a href="#" class="text-white text-center hvr-icon-forward"
+                                    style="padding: 3px 0px;" onclick="addProduct()">More info <i
+                                        class="fa-solid fa-arrow-right hvr-icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6  col-lg-4 col-xl-3 mb-3">
+                        <div class="card d-flex flex-column justify-content-between"
+                            style="height: 150px; background-color: #00800dd2;">
+                            <div class="d-flex justify-content-between px-3 pt-3 text-white">
+                                <div class="">
+                                    <h1 class="display-6 fw-light" id="idGategoty"></h1>
+                                    <p class="fs-6">Categories</p>
+                                </div>
+                                <div class="display-1" style="color: #00000018;">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0.067);">
+                                <a href="#" class="text-white text-center hvr-icon-forward"
+                                    style="padding: 3px 0px;" onclick="addGategories()">More info <i
+                                        class="fa-solid fa-arrow-right hvr-icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+                        <div class="card d-flex flex-column justify-content-between"
+                            style="height: 150px; background-color: #00807ed2;">
+                            <div class="d-flex justify-content-between px-3 pt-3 text-white">
+                                <div class="">
+                                    <h1 class="display-6 fw-light" id="idOrders"></h1>
+                                    <p class="fs-6">Orders</p>
+                                </div>
+                                <div class="display-1" style="color: #00000018;">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0.067);">
+                                <a href="#" class="text-white text-center hvr-icon-forward"
+                                    style="padding: 3px 0px;" onclick="addOrders()">More info <i
+                                        class="fa-solid fa-arrow-right hvr-icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+                        <div class="card d-flex flex-column justify-content-between"
+                            style="height: 150px; background-color: #710080d2;">
+                            <div class="d-flex justify-content-between px-3 pt-3 text-white">
+                                <div class="">
+                                    <h1 class="display-6 fw-light" id="idMyUser"></h1>
+                                    <p class="fs-6">Users</p>
+                                </div>
+                                <div class="display-1" style="color: #00000018;">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-center" style="background-color: rgba(0, 0, 0, 0.067);">
+                                <a href="#" class="text-white text-center hvr-icon-forward"
+                                    style="padding: 3px 0px;" onclick="addUsers()">More info <i
+                                        class="fa-solid fa-arrow-right hvr-icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
-            <div class="my-3">
-                <input type="hidden" id="editing-index" class="btn btn-primary">
-                <button type="submit" id="submit-btn" class="btn btn-primary">add Employee</button>
+
+            <div class="pt-5 container" id="dashboardShow">
+                <h1 class="fs-3 text-dark text-center">What is SETECT GROUP ?</h1>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <canvas id="myChart" class="w-100 h-100"></canvas>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <p class="text-dark fs-5 pt-4">SETEC Group is a web-based interface used by administrators to
+                            manage and
+                            monitor various aspects of a system, application, or business operation. It provides an
+                            overview of key data, analytics, and controls in one centralized location and Can User for
+                            add, edit, delete, and monitor users, roles, and permissions, Handle transactions, invoices,
+                            and payment records ..........
+
+                        </p>
+                    </div>
+
+                </div>
+
+
             </div>
-        </form>
-        <!-- table -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>#ID</th>
-                    <th>EmpName</th>
-                    <th>Position</th>
-                    <th>HireDate</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="employee-list">
-                <!--  -->
-            </tbody>
-        </table>
+            <!-- Products -->
+            <div class="container-fluid py-5 d-none" id="myProducts">
+                <div class="" id="myListProduct">
+                    <h1 class="text-dark fs-1 text-center mb-4">Products System</h1>
+                    <form action="" id="employee-form" data-bs-theme="light" class="">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Item: </label>
+                                <input type="text" id="employee-name" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Number: </label>
+                                <input type="text" id="employee-position" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Dated: </label>
+                                <input type="date" id="employee-hiredate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <input type="hidden" id="editing-index" class="btn btn-primary">
+                            <button type="submit" id="submit-btn" class="btn btn-primary">add item</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- table -->
+                <h1 id="h1ListProduct" class="d-none text-center text-dark fs-2 pb-3">List Product</h1>
+                <table class="table table-bordered" data-bs-theme="light">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Item</th>
+                            <th>Number</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employee-list">
+                        <!--  -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CRUDE Gategory-->
+            <div class="container-fluid py-5 d-none" id="myGategories">
+                <div class="" id="myListGategory">
+                    <h1 class="text-dark fs-1 text-center mb-4">Categories System</h1>
+                    <form action="" id="Gategories-form" data-bs-theme="light">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Type: </label>
+                                <input type="text" id="Gategories-name" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Number: </label>
+                                <input type="text" id="Gategories-position" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Dated: </label>
+                                <input type="date" id="Gategories-hiredate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <input type="hidden" id="editing-index" class="btn btn-primary">
+                            <button type="submit" id="submit-btn" class="btn btn-primary">add Gategories</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- table -->
+                <h1 id="h1ListCategorirty" class="d-none text-center text-dark fs-2 pb-3">List Gategories</h1>
+                <table class="table table-bordered" data-bs-theme="light">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Gategories Name</th>
+                            <th>Number</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Gategories-list">
+                        <!--  -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CRUDE Order-->
+            <div class="container-fluid py-5 d-none" id="myOrders">
+                <div class="" id="myListOrders">
+                    <h1 class="text-dark fs-1 text-center mb-4">Order System</h1>
+                    <form action="" id="Orders-form" data-bs-theme="light">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Item: </label>
+                                <input type="text" id="Orders-name" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Number: </label>
+                                <input type="text" id="Orders-position" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Dated: </label>
+                                <input type="date" id="Orders-hiredate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <input type="hidden" id="editing-index" class="btn btn-primary">
+                            <button type="submit" id="submit-btn" class="btn btn-primary">add Orders</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- table -->
+                <h1 id="h1listOrders" class="d-none text-center text-dark fs-2 pb-3">List Orders</h1>
+                <table class="table table-bordered" data-bs-theme="light">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Item</th>
+                            <th>Number</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Orders-list">
+                        <!--  -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CRUDE myUsers-->
+            <div class="container-fluid py-5 d-none" id="myUsers">
+                <div class="" id="myListUser">
+                    <h1 class="text-dark fs-1 text-center mb-4">Users System</h1>
+                    <form action="" id="myUsers-form" data-bs-theme="light">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">User Name: </label>
+                                <input type="text" id="myUsers-name" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Position: </label>
+                                <input type="text" id="myUsers-position" class="form-control" required>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="" class="text-dark">Date: </label>
+                                <input type="date" id="myUsers-hiredate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <input type="hidden" id="editing-index" class="btn btn-primary">
+                            <button type="submit" id="submit-btn" class="btn btn-primary">add myUsers</button>
+                        </div>
+                </div>
+                </form>
+                <!-- table -->
+                <h1 id="h1listUsers" class="d-none text-center text-dark fs-2 pb-3">List Users</h1>
+                <table class="table table-bordered" data-bs-theme="light">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>User Name</th>
+                            <th>Position</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myUsers-list">
+                        <!--  -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- table list -->
+
+
+
+
+        </div>
+
     </div>
 
-    <script>
-        function getCookie(name) {
-            const cookies = document.cookie.split(";");
-            for (const cookie of cookies) {
-                const [cookieName, cookieValue] = cookie.split("=");
-                if (cookieName.trim() === name) {
-                    return decodeURIComponent(cookieValue);
-                }
-            }
-            return null;
-        }
 
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-            document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/`;
-        }
+    <!-- bootstarp js -->
+    <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
 
-        function loadEmployees() {
-            const employeesCookie = getCookie("employees");
-            return employeesCookie ? JSON.parse(employeesCookie) : [];
-        }
+    <!--  main js-->
+    <script src="./assets/js/main.js"></script>
+    <!-- crude.js -->
+    <script src="./assets/js/crude.js"></script>
+    <!-- crude.js -->
+    <script src="./assets/js/category.js"></script>
+    <script src="./assets/js/Orders.js"></script>
+    <script src="./assets/js/myUsers.js"></script>
+    <script src="./assets/js/chaerine.js"></script>
+    <script src="./assets/js/fnClick.js"></script>
 
-        function saveEmployees() {
-            setCookie("employees", JSON.stringify(employees), 7);
-        }
-
-        const form = document.getElementById("employee-form");
-        const nameInput = document.getElementById("employee-name");
-        const positionInput = document.getElementById("employee-position");
-        const hiredateInput = document.getElementById("employee-hiredate");
-        const employeeList = document.getElementById("employee-list");
-        const editingIndexInput = document.getElementById("editing-index");
-        const submitBtn = document.getElementById("submit-btn");
-        let employees = loadEmployees();
-
-        function renderEmployees() {
-            employeeList.innerHTML = "";
-            employees.forEach((employee, index) => {
-                employeeList.innerHTML += `
-    <tr>
-      <td>${(index + 1).toString().padStart(3, "0")}</td>
-      <td>${employee.name}</td>
-      <td>${employee.position}</td>
-      <td>${employee.hiredate}</td>
-      <td>
-        <button class="btn btn-primary btn-sm w-25 h-25" onclick="editEmployee(${index})">Edit</button>
-        <button class="btn btn-danger btn-sm w-25 h-25" onclick="deleteEmployee(${index})">Delete</button>
-      </td>
-    </tr>`;
-            });
-        }
-
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const name = nameInput.value.trim();
-            const position = positionInput.value.trim();
-            const hiredate = hiredateInput.value.trim();
-            const editingIndex = editingIndexInput.value;
-
-            if (name && position && hiredate) {
-                const newEmployee = { name, position, hiredate };
-
-                if (editingIndex) {
-                    employees[editingIndex] = newEmployee;
-                    submitBtn.textContent = "Add Employee";
-                    editingIndexInput.value = "";
-                } else {
-                    employees.push(newEmployee);
-                }
-
-                nameInput.value = "";
-                positionInput.value = "";
-                hiredateInput.value = "";
-                saveEmployees();
-                renderEmployees();
-            }
-        });
-
-        window.deleteEmployee = (index) => {
-            if (confirm("Are you sure you want to delete this employee?")) {
-                employees.splice(index, 1);
-                saveEmployees();
-                renderEmployees();
-            }
-        };
-
-        window.editEmployee = (index) => {
-            const employee = employees[index];
-            nameInput.value = employee.name;
-            positionInput.value = employee.position;
-            hiredateInput.value = employee.hiredate;
-            editingIndexInput.value = index;
-            submitBtn.textContent = "Update Employee";
-        };
-
-        renderEmployees();
-
-    </script>
 </body>
 
 </html>
